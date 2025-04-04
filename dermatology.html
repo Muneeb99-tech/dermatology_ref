@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Dermatology Reference</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2b6cb0;
+            --secondary: #4299e1;
+            --accent: #ebf8ff;
+            --text: #2d3748;
+            --light: #f7fafc;
+            --alert: #e53e3e;
+            --dark: #1a202c;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        h1 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: #4a5568;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .search-area {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        #question-input {
+            flex: 1;
+            padding: 18px;
+            font-size: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        #question-input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 4px 10px rgba(66, 153, 225, 0.1);
+        }
+        
+        #ask-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 30px;
+            font-size: 16px;
+            font-weight: 500;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        #ask-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        #answer-container {
+            background: var(--accent);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 30px;
+            border-left: 5px solid var(--primary);
+            display: none;
+        }
+        
+        .answer-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .answer-header i {
+            color: var(--primary);
+            font-size: 2rem;
+        }
+        
+        .answer-title {
+            font-size: 1.5rem;
+            margin: 0;
+            color: var(--dark);
+        }
+        
+        #answer-text {
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+        
+        .condition-image {
+            max-width: 300px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            float: right;
+            margin-left: 30px;
+        }
+        
+        .condition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .condition-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--secondary);
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .condition-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .condition-name {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .condition-desc {
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        .condition-tag {
+            display: inline-block;
+            background: #ebf8ff;
+            color: var(--primary);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid #e2e8f0;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+        
+        .disclaimer {
+            background: #fff5f5;
+            color: var(--alert);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+        
+        .clearfix::after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+        
+        .info-section {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 3px solid var(--secondary);
+        }
+        
+        .info-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                margin: 20px;
+                padding: 25px;
+            }
+            
+            .search-area {
+                flex-direction: column;
+            }
+            
+            #ask-btn {
+                padding: 18px;
+                width: 100%;
+            }
+            
+            .condition-image {
+                float: none;
+                margin: 20px auto;
+                display: block;
+                max-width: 100%;
+            }
+            
+            .condition-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-clinic-medical"></i> Dermatology Reference</h1>
+            <p class="subtitle">Comprehensive professional information on dermatological conditions with clinical images</p>
+        </header>
+        
+        <div class="search-area">
+            <input type="text" id="question-input" placeholder="Ask about any dermatology condition (e.g. 'psoriasis symptoms')...">
+            <button id="ask-btn"><i class="fas fa-search"></i> Search</button>
+        </div>
+        
+        <div id="answer-container">
+            <div class="answer-header">
+                <i class="fas fa-diagnoses"></i>
+                <h3 class="answer-title">Condition Overview</h3>
+            </div>
+            <img id="condition-image" class="condition-image" src="" alt="Condition image">
+            <div id="answer-text" class="clearfix"></div>
+        </div>
+        
+        <h3 style="margin-top: 40px;">Browse Conditions:</h3>
+        <div class="condition-grid">
+            <!-- Condition cards will be added by JavaScript -->
+        </div>
+        
+        <div class="disclaimer">
+            <strong><i class="fas fa-exclamation-triangle"></i> Disclaimer:</strong> This information is for educational purposes only and not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.
+        </div>
+    </div>
+
+    <!-- ALL JAVASCRIPT IS HERE -->
+    <script>
+        // Comprehensive dermatology database with image URLs
+        const dermatologyDB = {
+            "psoriasis": {
+                symptoms: "Well-demarcated erythematous plaques with silvery scales, often on extensor surfaces (elbows, knees), scalp, and lower back. May cause nail pitting, onycholysis, or arthritis.",
+                causes: "Immune-mediated (T-cell activation) genetic condition triggered by stress, infection (especially streptococcal), trauma (Koebner phenomenon), or medications.",
+                treatments: "Topical: corticosteroids, vitamin D analogs, retinoids. Systemic: methotrexate, cyclosporine, acitretin. Biologics: TNF-α inhibitors, IL-17/23 inhibitors. Phototherapy: NB-UVB, PUVA.",
+                prevalence: "2-3% worldwide prevalence. Bimodal onset (20-30 and 50-60 years).",
+                image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Inflammatory"
+            },
+            "eczema (atopic dermatitis)": {
+                symptoms: "Pruritic, erythematous, scaly patches with excoriations. Chronic cases show lichenification. Common on flexural surfaces (antecubital/popliteal fossae), face (especially in children), and hands.",
+                causes: "Complex interplay of genetic predisposition (filaggrin mutations), immune dysregulation (Th2 dominance), skin barrier dysfunction, and environmental triggers (irritants, allergens, microbes).",
+                treatments: "Emollients, topical corticosteroids, topical calcineurin inhibitors (tacrolimus, pimecrolimus), phototherapy, systemic immunosuppressants (cyclosporine, dupilumab - anti-IL4/13).",
+                prevalence: "Affects 15-20% of children, 1-3% of adults. 60% develop in first year of life.",
+                image: "https://images.unsplash.com/photo-1592417817098-8fd3d9eb14a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Inflammatory"
+            },
+            "acne vulgaris": {
+                symptoms: "Open/closed comedones, inflammatory papules, pustules, nodules. Seborrhea common. Scarring may occur. Distributed on face, chest, back.",
+                causes: "Four key factors: follicular hyperkeratinization, increased sebum production (androgens), Cutibacterium acnes proliferation, inflammation.",
+                treatments: "Topical: retinoids, benzoyl peroxide, antibiotics. Oral: antibiotics (doxycycline), anti-androgens (OCPs), isotretinoin (severe cases). Procedures: extraction, intralesional steroids, laser.",
+                prevalence: "Affects 85% of adolescents, may persist into adulthood (especially women).",
+                image: "https://images.unsplash.com/photo-1556228578-8c89e6adf883?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Sebaceous"
+            },
+            "rosacea": {
+                symptoms: "Four subtypes: 1) Erythematotelangiectatic (flushing, telangiectasias), 2) Papulopustular (acneiform), 3) Phymatous (nasal hypertrophy), 4) Ocular (blepharitis, conjunctivitis).",
+                causes: "Multifactorial: vascular instability, Demodex mites, innate immune activation, neurogenic inflammation. Triggers include sun, heat, alcohol, spicy foods.",
+                treatments: "Topical: metronidazole, ivermectin, brimonidine. Oral: doxycycline (anti-inflammatory dose). Laser for telangiectasias. Surgical correction for phyma.",
+                prevalence: "Affects ~5% of adults, typically age 30-50. More common in fair-skinned individuals.",
+                image: "https://images.unsplash.com/photo-1573496359142-b8d877f2d0e4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Inflammatory"
+            },
+            "scabies": {
+                symptoms: "Intensely pruritic (worse at night) papules, burrows (grayish-white serpiginous lines), nodules. Common in finger webs, wrists, axillae, genitalia.",
+                causes: "Infestation with Sarcoptes scabiei var. hominis mite. Female mites burrow into stratum corneum to lay eggs.",
+                treatments: "Topical: permethrin 5% cream (first-line), benzyl benzoate, sulfur ointment. Oral: ivermectin (for crusted scabies). Treat all close contacts simultaneously.",
+                prevalence: "Global prevalence ~300 million cases annually. Outbreaks in nursing homes, institutions common.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Infectious"
+            },
+            "keloids": {
+                symptoms: "Firm, raised, expanding scar beyond original wound margins. Often pruritic/painful. Common on earlobes, chest, shoulders.",
+                causes: "Excessive collagen production during healing. Genetic predisposition more common in darker skin types (Fitzpatrick IV-VI).",
+                treatments: "Intralesional corticosteroids (triamcinolone), silicone sheets, cryotherapy, laser (pulsed dye), surgical excision (high recurrence).",
+                prevalence: "4-16% in African and Hispanic populations. Typically develops ages 10-30.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Scarring"
+            },
+            "lichen planus": {
+                symptoms: "Purple, polygonal, pruritic papules with Wickham striae (lacy white lines). Common on wrists, ankles, oral mucosa (reticular white patches).",
+                causes: "Cell-mediated immune reaction against basal keratinocytes. May be associated with HCV infection, certain drugs (thiazides, antimalarials).",
+                treatments: "Topical corticosteroids, calcineurin inhibitors. Oral: prednisone, hydroxychloroquine. Phototherapy for widespread cases.",
+                prevalence: "Affects ~1% of population. Peak incidence age 30-60.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Inflammatory"
+            },
+            "allergic contact dermatitis": {
+                symptoms: "Pruritic erythema, vesicles, scaling in geometric patterns corresponding to allergen exposure. Chronic cases show lichenification.",
+                causes: "Type IV hypersensitivity reaction. Common allergens: nickel, fragrances, preservatives, rubber accelerators, plants (poison ivy).",
+                treatments: "Allergen avoidance, topical corticosteroids, oral prednisone for severe cases. Patch testing for diagnosis.",
+                prevalence: "Lifetime prevalence ~15%. Occupational exposure increases risk.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Allergic"
+            },
+            "hemangioma": {
+                symptoms: "Bright red ('strawberry') raised lesions in infancy (proliferate then involute). Deeper lesions appear bluish. Most common on head/neck.",
+                causes: "Benign vascular tumors from endothelial cell proliferation. Most are sporadic; some associated with PHACE syndrome.",
+                treatments: "Observation (most involute by age 5-9). Propranolol for problematic lesions (obstructive, ulcerated). Laser for residual telangiectasias.",
+                prevalence: "4-10% of infants, more common in females (3:1), prematurity, multiples.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Vascular"
+            },
+            "herpes zoster (shingles)": {
+                symptoms: "Painful unilateral dermatomal vesicular eruption. Preceded by prodrome (pain, paresthesia). Postherpetic neuralgia common in elderly.",
+                causes: "Reactivation of latent VZV in dorsal root ganglia. Immunosuppression increases risk.",
+                treatments: "Antivirals (valacyclovir, famciclovir) within 72h of rash. Pain control. Vaccine (Shingrix) for prevention.",
+                prevalence: "Lifetime risk ~30%. Incidence increases sharply after age 50.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Infectious"
+            },
+            "irritant contact dermatitis": {
+                symptoms: "Erythema, scaling, fissuring in areas of irritant exposure (e.g. hands). Lacks allergic component.",
+                causes: "Direct cytotoxic effect from repeated exposure to water, detergents, solvents, or friction.",
+                treatments: "Barrier protection, emollients, mild topical steroids. Identify and minimize irritant exposure.",
+                prevalence: "Common occupational disease (healthcare, cleaning, food industries).",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Irritant"
+            },
+            "spider angioma": {
+                symptoms: "Central arteriole with radiating capillaries (legs of spider). Blanches with pressure. Common on face, neck, upper trunk.",
+                causes: "Estrogen-mediated vascular dilation. Associated with liver disease, pregnancy, OCP use.",
+                treatments: "Electrodesiccation or laser of central arteriole if cosmetically concerning.",
+                prevalence: "10-15% of healthy adults, up to 60% in cirrhotic patients.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Vascular"
+            },
+            "onycholysis": {
+                symptoms: "Painless separation of nail plate from bed, usually starting distally. White/yellow discoloration of affected area.",
+                causes: "Trauma, psoriasis, fungal infection, thyroid disease, photosensitivity (tetracyclines), contact irritants (cosmetics).",
+                treatments: "Treat underlying cause. Trim detached nail, avoid trauma/moisture. May take months to resolve.",
+                prevalence: "Common in women (cosmetic trauma), manual laborers.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Nail"
+            },
+            "paronychia": {
+                symptoms: "Acute: painful erythema, swelling, pus at nail fold. Chronic: fluctuant swelling, nail dystrophy.",
+                causes: "Acute: usually bacterial (S. aureus). Chronic: Candida + bacterial mix, often from moisture/irritant exposure.",
+                treatments: "Acute: incision/drainage if fluctuant, antibiotics. Chronic: keep dry, topical steroids + antifungals, avoid trauma.",
+                prevalence: "Common in bartenders, dishwashers, nail biters, diabetics.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Nail"
+            },
+            "furuncle (boil)": {
+                symptoms: "Painful, firm, erythematous nodule progressing to fluctuant abscess. Often with central pustule.",
+                causes: "Deep staphylococcal infection of hair follicle. Risk factors: diabetes, obesity, immunosuppression.",
+                treatments: "Warm compresses, incision/drainage if fluctuant. Antibiotics (MRSA coverage if suspected).",
+                prevalence: "Common, especially in areas with friction (buttocks, thighs, axillae).",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Infectious"
+            },
+            "carbuncle": {
+                symptoms: "Coalescence of multiple furuncles with deep suppuration. Systemic symptoms (fever, malaise) common.",
+                causes: "S. aureus (often MRSA) infection of contiguous follicles with deep extension.",
+                treatments: "Incision/drainage, systemic antibiotics (culture-guided), pain control. Hospitalization if extensive/septic.",
+                prevalence: "More common in diabetics, immunocompromised.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Infectious"
+            },
+            "alopecia areata": {
+                symptoms: "Well-circumscribed round patches of nonscarring hair loss. Exclamation point hairs at periphery. May progress to totalis/universalis.",
+                causes: "Autoimmune attack on hair follicles. Associated with atopy, thyroid disease, vitiligo, Down syndrome.",
+                treatments: "Intralesional steroids (first-line), topical steroids, minoxidil, immunotherapy (DPCP), JAK inhibitors (tofacitinib).",
+                prevalence: "Lifetime risk ~2%. Any age, but peaks in 20s-30s.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Hair"
+            },
+            "seborrheic dermatitis": {
+                symptoms: "Erythematous patches with greasy yellow scales. On scalp (dandruff), face (nasolabial folds, eyebrows), chest.",
+                causes: "Malassezia yeast overgrowth, sebum production, individual susceptibility. Worse in Parkinson's, HIV.",
+                treatments: "Antifungal shampoos (ketoconazole, selenium sulfide), topical steroids, calcineurin inhibitors.",
+                prevalence: "3-5% of population. Bimodal (infants <3mo, adults 30-60y).",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Inflammatory"
+            },
+            "Behçet disease": {
+                symptoms: "Triad: recurrent oral ulcers, genital ulcers, uveitis. Also: pseudofolliculitis, erythema nodosum, pathergy.",
+                causes: "Vasculitis of unknown cause. Strong HLA-B51 association. More common along Silk Road (Mediterranean to East Asia).",
+                treatments: "Colchicine, corticosteroids, immunosuppressants (azathioprine), anti-TNF agents for severe cases.",
+                prevalence: "2-20/100,000 in endemic areas. Typically onset age 20-30.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Systemic"
+            },
+            "tinea versicolor": {
+                symptoms: "Hypo- or hyperpigmented scaly macules on trunk/proximal extremities. Mild pruritus may occur.",
+                causes: "Overgrowth of Malassezia yeast (normal skin flora) in humid conditions.",
+                treatments: "Topical antifungals (selenium sulfide, ketoconazole), oral antifungals (itraconazole) for extensive cases.",
+                prevalence: "Common in tropical climates, adolescents/young adults.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Infectious"
+            },
+            "vitiligo": {
+                symptoms: "Sharply demarcated depigmented macules/patches. Often symmetrical. Common on face, hands, body folds.",
+                causes: "Autoimmune destruction of melanocytes. Associated with other autoimmune diseases (thyroid, pernicious anemia).",
+                treatments: "Topical steroids, calcineurin inhibitors, phototherapy (NB-UVB), surgical grafting for stable cases.",
+                prevalence: "0.5-2% worldwide. Half start before age 20.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Pigmentary"
+            },
+            "melanoma": {
+                symptoms: "ABCDE criteria: Asymmetry, Border irregularity, Color variation, Diameter >6mm, Evolving. May arise in existing nevus.",
+                causes: "UV exposure (especially intermittent intense exposure), genetic factors (CDKN2A mutations), numerous nevi.",
+                treatments: "Surgical excision with margins based on Breslow depth. Sentinel node biopsy. Immunotherapy/targeted therapy for advanced.",
+                prevalence: "Lifetime risk ~2% in Caucasians. Increasing incidence worldwide.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Neoplastic"
+            },
+            "basal cell carcinoma": {
+                symptoms: "Pearly papule with telangiectasias, rolled borders. May ulcerate (rodent ulcer). Rarely metastasizes.",
+                causes: "Chronic UV exposure (especially UVB). PTCH1 mutations common. Most common human cancer.",
+                treatments: "Surgical excision (Mohs for high-risk), electrodesiccation/curettage, topical imiquimod for superficial.",
+                prevalence: ">3 million cases/year in US alone. Increases with age.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Neoplastic"
+            },
+            "squamous cell carcinoma": {
+                symptoms: "Erythematous scaly papule/plaque that may crust or ulcerate. Grows more rapidly than BCC.",
+                causes: "Chronic UV exposure, immunosuppression, chemical carcinogens, HPV (especially genital, periungual).",
+                treatments: "Surgical excision (Mohs for high-risk), radiation for inoperable cases. Higher metastatic potential than BCC.",
+                prevalence: "~1 million cases/year in US. Second most common skin cancer.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Neoplastic"
+            },
+            "urticaria (hives)": {
+                symptoms: "Evanescent pruritic wheals (raised erythematous lesions) with central clearing. Individual lesions last <24h.",
+                causes: "Mast cell degranulation releasing histamine. Triggers: foods, drugs, infections, physical stimuli (dermographism).",
+                treatments: "H1 antihistamines (second-gen like cetirizine first-line), H2 blockers, corticosteroids for severe cases.",
+                prevalence: "~20% of population experiences at least one episode.",
+                image: "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+                category: "Allergic"
+            }
+        };
+
+        // Initialize the condition cards
+        function initConditionCards() {
+            const container = document.querySelector('.condition-grid');
+            
+            for (const condition in dermatologyDB) {
+                const card = document.createElement('div');
+                card.className = 'condition-card';
+                card.innerHTML = `
+                    <div class="condition-name">${formatConditionName(condition)}</div>
+                    <div class="condition-desc">${dermatologyDB[condition].symptoms.substring(0, 80)}...</div>
+                    <span class="condition-tag">${dermatologyDB[condition].category}</span>
+                `;
+                
+                card.addEventListener('click', () => {
+                    document.getElementById('question-input').value = condition;
+                    showAnswer(condition);
+                    window.scrollTo({top: 0, behavior: 'smooth'});
+                });
+                
+                container.appendChild(card);
+            }
+        }
+
+        // Show answer for a condition
+        function showAnswer(condition) {
+            const answerContainer = document.getElementById('answer-container');
+            const answerText = document.getElementById('answer-text');
+            const conditionImage = document.getElementById('condition-image');
+            
+            if (!dermatologyDB[condition]) {
+                answerText.innerHTML = "I don't have detailed information about that condition. Please try one of the common conditions listed below.";
+                answerContainer.style.display = 'block';
+                conditionImage.style.display = 'none';
+                return;
+            }
+            
+            const data = dermatologyDB[condition];
+            answerText.innerHTML = `
+                <div class="info-section">
+                    <div class="info-title"><i class="fas fa-info-circle"></i> Symptoms</div>
+                    <p>${data.symptoms}</p>
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-title"><i class="fas fa-virus"></i> Causes</div>
+                    <p>${data.causes}</p>
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-title"><i class="fas fa-prescription-bottle-alt"></i> Treatments</div>
+                    <p>${data.treatments}</p>
+                </div>
+                
+                <div class="info-section">
+                    <div class="info-title"><i class="fas fa-chart-line"></i> Prevalence</div>
+                    <p>${data.prevalence}</p>
+                </div>
+            `;
+            
+            if (data.image) {
+                conditionImage.src = data.image;
+                conditionImage.alt = formatConditionName(condition);
+                conditionImage.style.display = 'block';
+            } else {
+                conditionImage.style.display = 'none';
+            }
+            
+            answerContainer.style.display = 'block';
+        }
+
+        // Format condition names nicely
+        function formatConditionName(condition) {
+            return condition.split(' ')
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ');
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            initConditionCards();
+            
+            // Handle search button click
+            document.getElementById('ask-btn').addEventListener('click', function() {
+                const question = document.getElementById('question-input').value.toLowerCase().trim();
+                
+                if (!question) {
+                    alert('Please enter a question about a dermatology condition');
+                    return;
+                }
+                
+                // Find matching condition
+                let matchedCondition = null;
+                const threshold = 0.7; // 70% match confidence
+                let highestConfidence = 0;
+                
+                for (const condition in dermatologyDB) {
+                    // Simple keyword matching
+                    const keywords = condition.toLowerCase().split(' ');
+                    let confidence = 0;
+                    
+                    keywords.forEach(keyword => {
+                        if (question.includes(keyword)) {
+                            confidence += 1/keywords.length;
+                        }
+                    });
+                    
+                    // Also check for symptoms/treatments keywords
+                    if (question.includes('symptom') || question.includes('sign')) {
+                        confidence += 0.2;
+                    }
+                    if (question.includes('treatment') || question.includes('manage') || question.includes('therapy')) {
+                        confidence += 0.2;
+                    }
+                    if (question.includes('cause') || question.includes('why')) {
+                        confidence += 0.2;
+                    }
+                    
+                    if (confidence > highestConfidence && confidence >= threshold) {
+                        highestConfidence = confidence;
+                        matchedCondition = condition;
+                    }
+                }
+                
+                if (matchedCondition) {
+                    showAnswer(matchedCondition);
+                } else {
+                    const answerContainer = document.getElementById('answer-container');
+                    const answerText = document.getElementById('answer-text');
+                    answerText.innerHTML = `
+                        <p>I couldn't confidently identify a specific condition from your question. Here are some conditions I can tell you about:</p>
+                        <ul style="columns: 2; margin-top: 15px;">
+                            ${Object.keys(dermatologyDB).map(cond => `<li>${formatConditionName(cond)}</li>`).join('')}
+                        </ul>
+                        <p style="margin-top: 15px;">Try asking about symptoms, causes, or treatments for these conditions.</p>
+                    `;
+                    document.getElementById('condition-image').style.display = 'none';
+                    answerContainer.style.display = 'block';
+                }
+            });
+            
+            // Allow pressing Enter key
+            document.getElementById('question-input').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    document.getElementById('ask-btn').click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
